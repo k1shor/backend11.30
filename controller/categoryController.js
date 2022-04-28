@@ -44,3 +44,34 @@ exports.findCategory = async (req, res) =>{
         res.send(category)
     }
 }
+
+// to update a category
+exports.updateCategory = async (req,res) =>{
+    let category = await Category.findByIdAndUpdate(req.params.c_id,
+        {
+            category_name:req.body.category_name
+        },
+        {
+            new:true
+        })
+        if(!category){
+            return res.status(400).json({error:"something went wrong"})
+        }
+        else{
+            res.send(category)
+        }
+}
+
+//to delete a category
+exports.deleteCategory = (req,res) =>{
+    Category.findByIdAndRemove(req.params.id)
+    .then(category=>{
+        if(!category){
+            return res.status(400).json({error:"category does not exist."})
+        }
+        else{
+            return res.status(200).json({message:"category deleted successfully"})
+        }
+    })
+    .catch(error=>{return res.status(400).json({error:error})})
+}
