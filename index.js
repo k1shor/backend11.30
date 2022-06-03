@@ -7,8 +7,6 @@ const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 
-
-
 const CategoryRoute = require('./routes/categoryRoute')
 const ProductRoute = require('./routes/productRoute')
 const UserRoute = require('./routes/userRoute')
@@ -18,14 +16,12 @@ const port = process.env.PORT || 8000
 
 const app = express()
 
-
 //middleware
 app.use(bodyParser.json())
 app.use(morgan('dev'))
 app.use(cookieParser())
 app.use('/images',express.static('./public/uploads'))
 app.use(cors())
-
 
 //routes
 app.use('/api',CategoryRoute)

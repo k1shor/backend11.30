@@ -29,13 +29,15 @@ exports.addUser = async (req, res) => {
             if (!token) {
                 return res.status(400).json({ error: "something went wrong" })
             }
+            const url = `${process.env.FRONTEND_URL}/email/confirmation/${token.token}`
             // send token in mail
+
             sendEmail({
                 from: 'noreply@example.com',
                 to: user.email,
                 subject: 'Verification Email',
-                text: `Please click on the link below to verify your account. http://localhost:5000/api/verification/${token.token}`,
-                html: `<a href='http://localhost:5000/api/verification/${token.token}'><button>Verify your account</button></a>`
+                text: `Please click on the link below to verify your account. ${url}`,
+                html: `<a href='${url}'><button>Verify your account</button></a>`
             })
 
 
@@ -146,7 +148,7 @@ exports.forgetPassword = async (req, res) => {
     let user = await User.findOne({ email: req.body.email })
     // check if user exists
     if (!user) {
-        return res.status(400).json({ error: "user not registered. Please try different email or register" })
+        return res.status(400).json({error: "user not registered. Please try different email or register" })
     }
     let token = new Token({
         token: crypto.randomBytes(16).toString('hex'),
@@ -154,15 +156,16 @@ exports.forgetPassword = async (req, res) => {
     })
     token = await token.save()
     if (!token) {
-        return res.status(400).json({ error: "something went wrong" })
+        return res.status(400).json({error: "something went wrong" })
     }
     else {
+        const url = `${process.env.FRONTEND_URL}/resetpassword/${token.token}`
         sendEmail({
             from: 'noreply@example.com',
             to: user.email,
             subject: 'Password Reset Link',
-            text: `Please click on the link below to reset your password. http://localhost:5000/api/resetpassword/${token.token}`,
-            html: `<a href='http://localhost:5000/api/resetpassword/${token.token}'><button>Reset Password</button></a>`
+            text: `Please click on the link below to reset your password. ${url}`,
+            html: `<a href='${url}'><button>Reset Password</button></a>`
         })
         return res.status(200).json({ message: "Password reset link has been sent to your email." })
     }
