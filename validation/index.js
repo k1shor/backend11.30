@@ -25,3 +25,17 @@ exports.productCheck =[
     check('count_in_stock','count in stock is required').notEmpty()
     .isNumeric('count must be a number')
 ]
+
+exports.userCheck = [
+    check('user_name',"name is required").notEmpty()
+    .isLength({min:3}).withMessage("name must be at least 3 characters"),
+    check('email',"email is required").notEmpty()
+    .isEmail().withMessage("incorrect email format"),
+    check('password',"password is required").notEmpty()
+    .matches(/[a-z]/).withMessage('password must contain at least 1 lowercase character')
+    .matches(/[A-Z]/).withMessage('password must contain at least 1 uppercase character')
+    .matches(/[0-9]/).withMessage('password must contain at least 1 number')
+    .matches(/[\-_!@#$%^&*]/).withMessage('password must contain at least 1 special character')
+    .isLength({min:8}).withMessage('password must be at least 8 characters')
+    .isLength({max:30}).withMessage('password must not be more than 30 characters')
+]

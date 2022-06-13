@@ -18,8 +18,19 @@ exports.addProduct = async(req,res)=>{
 }
 
 // to view product list
+// http://localhost:5000/productlist?sortBy='createdAt'&order="-1"&limit="8"
 exports.productlist = async(req,res)=>{
+    let order = req.query.order ? req.query.order : 1
+    // -1 - descending, 1 - ascending
+    let sortBy = req.query.sortBy ? req.query.sortBy : '_id'
+    // createdAt
+    let limit = req.query.limit ? parseInt(req.query.limit) : 20000
+    // 8
+
+
     let product = await Product.find().populate('category')
+    .sort([[sortBy, order]])
+    .limit(limit)
     if(!product){
         return res.status(400).json({error:"something went wrong"})
     }
