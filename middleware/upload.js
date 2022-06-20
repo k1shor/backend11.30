@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
 })
 
 let imageFilter = (req, file, cb) => {
-    if (!file.originalname) {
+    if (!file) {
         return cb(new Error('Please choose a file to upload'), false)
     }
 
