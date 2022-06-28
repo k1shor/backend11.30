@@ -54,7 +54,7 @@ exports.updateProduct = async(req,res)=>{
             product_name:req.body.product_name,
             product_price: req.body.product_price,
             product_description: req.body.product_description,
-            product_image:req.file.path,
+            // product_image:req.file.path? req.file.path: product.product_image,
             count_in_stock: req.body.count_in_stock,
             category: req.body.category
         },
